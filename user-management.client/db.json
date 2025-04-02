@@ -1,0 +1,25 @@
+{
+    "users": [
+      {
+        "id": 1,
+        "fullName": "Іван Іванов",
+        "email": "ivan@example.com",
+        "phone": "380971112233",
+        "dateOfBirth": "1990-01-01",
+        "role": "Користувач",
+        "position": "Менеджер",
+        "active": true
+      },
+      {
+        "id": 2,
+        "fullName": "Олена Петрова",
+        "email": "olena@example.com",
+        "phone": "380981234567",
+        "dateOfBirth": "1990-01-02",
+        "role": "Адміністратор",
+        "position": "Менеджер",
+        "active": false
+      }
+    ]
+  }
+  
