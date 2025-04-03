@@ -6,7 +6,7 @@
         "email": "ivan@example.com",
         "phone": "380971112233",
         "dateOfBirth": "1990-01-01",
-        "role": "Користувач",
+        "role": "User",
         "position": "Менеджер",
         "active": true
       },
@@ -16,7 +16,7 @@
         "email": "olena@example.com",
         "phone": "380981234567",
         "dateOfBirth": "1990-01-02",
-        "role": "Адміністратор",
+        "role": "Admin",
         "position": "Менеджер",
         "active": false
       }
