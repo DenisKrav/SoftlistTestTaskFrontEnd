@@ -6,11 +6,13 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { User } from '../../api/Models/UserModel'
+import { useEffect } from 'react'
 
 type UserDialogProps = {
     open: boolean
     onClose: () => void
     onSubmit: (data: Omit<User, 'id'>) => void
+    initialData?: Omit<User, 'id'> | null
 }
 
 const userSchema = z.object({
@@ -25,8 +27,7 @@ const userSchema = z.object({
 
 type FormData = z.infer<typeof userSchema>
 
-export function UserDialog({ open, onClose, onSubmit }: UserDialogProps) {
-
+export function UserDialog({ open, onClose, onSubmit, initialData }: UserDialogProps) {
     const { register, handleSubmit, control, formState: { errors }, reset } = useForm<FormData>({
         resolver: zodResolver(userSchema),
         defaultValues: {
@@ -40,8 +41,26 @@ export function UserDialog({ open, onClose, onSubmit }: UserDialogProps) {
         }
     })
 
+    useEffect(() => {
+        if (initialData) {
+            reset(initialData)
+        } else {
+            reset({
+                fullName: '',
+                email: '',
+                phone: '',
+                dateOfBirth: new Date().toISOString().split('T')[0],
+                role: 'User',
+                position: '',
+                active: true
+            })
+        }
+    }, [initialData, reset])
+
+
     const handleFormSubmit: SubmitHandler<FormData> = (data) => {
-        onSubmit(data)
+        onSubmit(data);
+        reset();
     }
 
     return (
@@ -49,7 +68,7 @@ export function UserDialog({ open, onClose, onSubmit }: UserDialogProps) {
             <DialogTitle sx={{ mt: 1, mb: 1 }}>New user</DialogTitle>
 
             <DialogContent
-                style={{paddingTop: "5px"}}
+                style={{ paddingTop: "5px" }}
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -141,7 +160,9 @@ export function UserDialog({ open, onClose, onSubmit }: UserDialogProps) {
                     Cancel
                 </Button>
                 <Button variant="contained" onClick={handleSubmit(handleFormSubmit)}>
-                    Add
+                    {
+                        initialData ? 'Update' : 'Add'
+                    }
                 </Button>
             </DialogActions>
         </Dialog>

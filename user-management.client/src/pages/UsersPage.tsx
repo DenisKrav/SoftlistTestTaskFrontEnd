@@ -13,17 +13,38 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { useState } from 'react'
 import { useUsers } from '../hooks/useUsers'
 import { UserDialog } from '../components/UserDialog/UserDialog'
+import { useCreateUser } from '../hooks/useCreateUser'
+import { StatusDialog } from '../components/StatusDialog/StatusDialog'
+import { useDeleteUser } from '../hooks/useDeleteUser'
+import { ConfirmDialog } from '../components/ConfirmDialog/ConfirmDialog'
+import { useUpdateUser } from '../hooks/useUpdateUser'
+import { User } from '../api/Models/UserModel'
 
 export function UsersPage() {
     const [search, setSearch] = useState('')
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
     const [isDialogOpen, setDialogOpen] = useState(false)
+    const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null)
+    const [editingUser, setEditingUser] = useState<User | null>(null)
 
     const [sortBy, setSortBy] = useState<'fullName' | 'email' | 'role' | 'position' | 'phone' | 'dateOfBirth' | 'active'>('fullName')
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
 
+    const [statusModal, setStatusModal] = useState<{
+        open: boolean
+        status: 'loading' | 'success' | 'error'
+        message: string
+    }>({
+        open: false,
+        status: 'loading',
+        message: ''
+    })
+
     const { data: users, isLoading, isError } = useUsers()
+    const createUserMutation = useCreateUser()
+    const deleteUserMutation = useDeleteUser()
+    const updateUserMutation = useUpdateUser()
 
     const filteredUsers = (users ?? []).filter((user) =>
         user.fullName.toLowerCase().includes(search.toLowerCase()) ||
@@ -71,6 +92,40 @@ export function UsersPage() {
             setSortBy(column)
             setSortDirection('asc')
         }
+    }
+
+    const handleDeleteConfirmed = () => {
+        if (confirmDeleteId === null) return
+
+        setStatusModal({
+            open: true,
+            status: 'loading',
+            message: 'Deleting user...'
+        })
+
+        deleteUserMutation.mutate(confirmDeleteId, {
+            onSuccess: () => {
+                setStatusModal({
+                    open: true,
+                    status: 'success',
+                    message: 'User deleted successfully!'
+                })
+            },
+            onError: () => {
+                setStatusModal({
+                    open: true,
+                    status: 'error',
+                    message: 'Failed to delete user. Try again.'
+                })
+            },
+        })
+
+        setConfirmDeleteId(null)
+    }
+
+    const handleEditUser = (user: User) => {
+        setEditingUser(user)
+        setDialogOpen(true)
     }
 
     return (
@@ -207,10 +262,10 @@ export function UsersPage() {
                                                     />
                                                 </TableCell>
                                                 <TableCell align="right">
-                                                    <IconButton onClick={() => console.log('Edit', user)}>
+                                                    <IconButton onClick={() => handleEditUser(user)}>
                                                         <EditIcon />
                                                     </IconButton>
-                                                    <IconButton onClick={() => console.log('Delete', user)}>
+                                                    <IconButton onClick={() => setConfirmDeleteId(user.id)}>
                                                         <DeleteIcon />
                                                     </IconButton>
                                                 </TableCell>
@@ -231,15 +286,74 @@ export function UsersPage() {
                         </>
                 }
             </Paper>
-            
+
             <UserDialog
                 open={isDialogOpen}
-                onClose={() => setDialogOpen(false)}
-                onSubmit={(data) => {
-                    console.log("Дані для створення:", data)
+                initialData={editingUser ? { ...editingUser } : null}
+                onClose={() => {
+                    setEditingUser(null)
                     setDialogOpen(false)
-                    // Тут буде useMutation(createUser)
                 }}
+                onSubmit={(data) => {
+                    setStatusModal({
+                        open: true,
+                        status: 'loading',
+                        message: editingUser ? 'Updating user...' : 'Creating user...'
+                    })
+
+                    if (editingUser) {
+                        updateUserMutation.mutate({ ...editingUser, ...data }, {
+                            onSuccess: () => {
+                                setStatusModal({
+                                    open: true,
+                                    status: 'success',
+                                    message: 'User updated successfully!'
+                                })
+                                setDialogOpen(false)
+                                setEditingUser(null)
+                            },
+                            onError: () => {
+                                setStatusModal({
+                                    open: true,
+                                    status: 'error',
+                                    message: 'Something went wrong. Try again.'
+                                })
+                            }
+                        })
+                    } else {
+                        createUserMutation.mutate(data, {
+                            onSuccess: () => {
+                                setStatusModal({
+                                    open: true,
+                                    status: 'success',
+                                    message: 'User created successfully!'
+                                })
+                                setDialogOpen(false)
+                            },
+                            onError: () => {
+                                setStatusModal({
+                                    open: true,
+                                    status: 'error',
+                                    message: 'Something went wrong. Try again.'
+                                })
+                            }
+                        })
+                    }
+                }}
+            />
+
+            <StatusDialog
+                open={statusModal.open}
+                status={statusModal.status}
+                message={statusModal.message}
+                onClose={() => setStatusModal(prev => ({ ...prev, open: false }))}
+            />
+
+            <ConfirmDialog
+                open={confirmDeleteId !== null}
+                message="Are you sure you want to delete this user?"
+                onCancel={() => setConfirmDeleteId(null)}
+                onConfirm={handleDeleteConfirmed}
             />
         </>
     )

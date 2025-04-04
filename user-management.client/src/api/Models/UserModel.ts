@@ -1,10 +1,10 @@
 export type User = {
-    id: number
-    fullName: string
-    email: string
-    phone: string
-    dateOfBirth: string
-    role: string
-    position: string
-    active: boolean
+    id: number;
+    fullName: string;
+    email: string;
+    phone: string;
+    dateOfBirth: string;
+    role: 'Admin' | 'User';
+    position: string;
+    active: boolean;
 }
