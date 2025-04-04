@@ -1,5 +1,5 @@
 import { Layout } from "./layouts/Layout"
-import { UsersPage } from "./pages/UsersPage"
+import { UsersPage } from "./pages/UsersPage/UsersPage"
 
 function App() {
   return (

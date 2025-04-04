@@ -1,44 +1,84 @@
 {
   "users": [
     {
-      "id": "1",
-      "fullName": "Іван Іванов",
-      "email": "ivan@example.com",
-      "phone": "380971112233",
-      "dateOfBirth": "1990-01-01",
+      "id": "9adb",
+      "fullName": "Pes Patron",
+      "email": "patron@gmail.com",
+      "phone": "0956821457",
+      "dateOfBirth": "2024-02-04",
       "role": "User",
-      "position": "Менеджер",
+      "position": "Охорона",
       "active": true
     },
     {
-      "id": "2",
-      "fullName": "Олена Петрова",
-      "email": "olena@example.com",
-      "phone": "380981234567",
-      "dateOfBirth": "1990-01-02",
-      "role": "Admin",
-      "position": "Менеджер",
+      "id": "3ba6",
+      "fullName": "Ivo Bobul",
+      "email": "ceiSonCeiSon@gmail.com",
+      "phone": "09568715472",
+      "dateOfBirth": "1960-08-22",
+      "role": "User",
+      "position": "Менеджер з музикального супроводу",
+      "active": true
+    },
+    {
+      "id": "e227",
+      "fullName": "Harry Potter",
+      "email": "expeliarmus@gmail.com",
+      "phone": "0648721566",
+      "dateOfBirth": "1990-07-12",
+      "role": "User",
+      "position": "Магічний Senior",
+      "active": true
+    },
+    {
+      "id": "c691",
+      "fullName": "Damboldor",
+      "email": "leviosa@gmail.com",
+      "phone": "7781547333",
+      "dateOfBirth": "1891-06-19",
+      "role": "User",
+      "position": "Менеджер з вирішення складних питань",
       "active": false
     },
     {
-      "id": "e700",
-      "fullName": "Денис Кравченко",
-      "email": "d@gmail.com",
-      "phone": "0956742358",
-      "dateOfBirth": "2025-04-04",
-      "role": "User",
-      "position": "Менеджер",
+      "id": "9c07",
+      "fullName": "Shrek",
+      "email": "fiaona@gmail.com",
+      "phone": "7777777777",
+      "dateOfBirth": "1977-06-07",
+      "role": "Admin",
+      "position": "Наглядач",
       "active": true
     },
     {
-      "id": "9809",
-      "fullName": "Pes Patron Trimae Rayon",
-      "email": "pesko@gmail.com",
-      "phone": "0954731854",
-      "dateOfBirth": "2025-04-04",
+      "id": "6de9",
+      "fullName": "Chip",
+      "email": "whereDale@gmail.com",
+      "phone": "1547965473",
+      "dateOfBirth": "1980-10-14",
       "role": "User",
-      "position": "Pes",
+      "position": "Детектив",
       "active": true
+    },
+    {
+      "id": "e13d",
+      "fullName": "Dale",
+      "email": "whereChip@gmail.com",
+      "phone": "9543215647",
+      "dateOfBirth": "1970-06-15",
+      "role": "User",
+      "position": "Детектив",
+      "active": true
+    },
+    {
+      "id": "0165",
+      "fullName": "Scrooge McDuck",
+      "email": "money@gmail.com",
+      "phone": "06543157894",
+      "dateOfBirth": "1976-06-08",
+      "role": "User",
+      "position": "Бухгалтер",
+      "active": false
     }
   ]
 }
